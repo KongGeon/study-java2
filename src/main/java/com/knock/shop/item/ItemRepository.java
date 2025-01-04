@@ -1,4 +1,4 @@
-package com.knock.shop;
+package com.knock.shop.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

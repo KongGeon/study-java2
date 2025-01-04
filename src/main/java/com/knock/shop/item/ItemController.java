@@ -1,7 +1,8 @@
-package com.knock.shop;
+package com.knock.shop.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,9 @@ public class ItemController {
         return "write.html";
     }
     @PostMapping("/add")
-    String addPost(String title, Integer price) {
-        itemService.saveItem(title, price);
-
+    String addPost(String title, Integer price, Authentication auth) {
+        String username = auth.getName();
+        itemService.saveItem(title, price, username);
         // 리다이렉트 확인
         return "redirect:/list"; // list 페이지로 이동
     }
@@ -50,7 +51,7 @@ public class ItemController {
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model){ //@PathVariable Integer id => 주소에 적혀있는 id 불러오기
         Optional<Item> result = itemRepository.findById(id);
-    if( result.isPresent()){ //  result가 비어 있으면 서버가 꺼질수 있어서 이렇게 비어있지 않은지 확인해야함
+        if( result.isPresent()){ //  result가어 있으면 서버가 꺼질수 있어서 이렇게 비어있지 않은지 확인해야함
         System.out.println(result.get());
         model.addAttribute("items", result.get());
         return "detail.html";
@@ -75,4 +76,8 @@ public class ItemController {
         // 리다이렉트 확인
         return ResponseEntity.status(200).body("삭제완료"); // list 페이지로 이동
     }
+
+    //    회원가입
+
+
 }
