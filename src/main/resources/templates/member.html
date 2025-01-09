@@ -12,6 +12,11 @@
 <div th:replace="~{nav.html :: navbar}"></div>
 
 <form action="/addMember" method="POST">
+    <!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+    <!--    csrf 켤때 모든 폼에 위 input을 추가해야함, 랜덤문자를 서버로 함께 전달함,
+    서버는 발금했던 문자와 맞는 지확인하고 맞다면 통과 => 이게 csrf 보안기능
+    다만 AJAX로 보낼때에도 csrf 토큰을 함께 보내야함 -->
+
     <input name="password" placeholder="password">
     <input name="display_name" placeholder="display_name">
     <input name="username" placeholder="username">

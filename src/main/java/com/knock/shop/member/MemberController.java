@@ -34,8 +34,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String login(Authentication auth){
-
-        if (auth.isAuthenticated()){ //로그인 상태에서 로그인페이지 오면 리스트페이지로 이동
+        if (!(auth == null)){ //로그인 상태에서 로그인페이지 오면 리스트페이지로 이동
             return "redirect:/list";
         }
         return "login.html";
@@ -43,7 +42,12 @@ public class MemberController {
 
     @GetMapping("/my-page")
     public String myPage(Authentication auth) {
+        //        MyUserDetailsService에서 일반 User()로 만들었으면 auth만 쓰면 되는데 커스텀유저로 새로 만들어서 auth.getPrincipal()로 써야함
+
+        CustomUser result = (CustomUser) auth.getPrincipal();
+
         System.out.println(auth);
+        System.out.println(result.displayName);
         System.out.println(auth.getName()); //아이디출력가능
         System.out.println(auth.isAuthenticated()); //로그인여부 검사가능
         System.out.println(auth.getAuthorities().contains(new SimpleGrantedAuthority("일반유저")));

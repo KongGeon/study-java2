@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor //MemberRepository 이거 불러올떄 필요함
@@ -36,8 +37,19 @@ public class MyUserDetailsService implements UserDetailsService {
         var user = result.get(); // 옵셔널로 데이터를 가져오기 때문에 .get() 이용해서 데이터 전달
         List<GrantedAuthority>  authorities = new ArrayList<>(); //권한 리스트는 꼭 GrantedAuthority로 정의해야함
         authorities.add(new SimpleGrantedAuthority("일반유저")); //메모 느낌으로 적으면 됨, new SimpleGrantedAuthority 이런식으로 해야 나중에 API에ㅐ서 현재의 유저의 권한 출력 가능
-
-        return new User(user.getUsername(), user.getPassword(), authorities);
+       //return new User(user.getUsername(), user.getPassword(), authorities); // User에는 3개의 파라미터 밖에 넣을 수 없음 그래서 커스텀유저 하나 만들어서 추가하겠음
+        var a = new CustomUser(user.getUsername(), user.getPassword(), authorities);
+        a.displayName = user.getDisplayName();
+        return a;
     }
 
+}
+
+class CustomUser extends User{
+
+    public String displayName;
+    public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
+        //super : 방금 복사해온 클래스( = User)
+    }
 }
