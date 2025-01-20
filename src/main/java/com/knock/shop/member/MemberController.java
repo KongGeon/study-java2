@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor //Lombok 문법, db입출력할때 사용
@@ -52,5 +53,26 @@ public class MemberController {
         System.out.println(auth.isAuthenticated()); //로그인여부 검사가능
         System.out.println(auth.getAuthorities().contains(new SimpleGrantedAuthority("일반유저")));
         return "mypage.html";
+    }
+
+    @GetMapping("/user/1")
+    @ResponseBody
+    public MemberDto user() {
+        var a = memberRepository.findById(1L);
+        System.out.println(a);
+        System.out.println(a.get().getUsername());
+        System.out.println(a.get().getDisplayName());
+        var data = new MemberDto(a.get().getUsername(), a.get().getDisplayName());
+        System.out.println(data);
+        return data;
+    }
+
+    class MemberDto {
+        public String username;
+        public String displayName;
+        MemberDto(String a, String b){
+            this.username = a;
+            this.displayName = b;
+        }
     }
 }

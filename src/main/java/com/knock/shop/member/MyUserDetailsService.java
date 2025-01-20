@@ -45,11 +45,3 @@ public class MyUserDetailsService implements UserDetailsService {
 
 }
 
-class CustomUser extends User{
-
-    public String displayName;
-    public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-        //super : 방금 복사해온 클래스( = User)
-    }
-}

@@ -1,6 +1,6 @@
 <div class="nav" th:fragment="navbar">
     <a class="logo">SpringMall</a>
-    <a href="/list">List</a>
+    <a href="/list/page/1">List</a>
     <a href="/write">Write</a>
     <span sec:authorize="isAuthenticated()">
         <a sec:authentication="principal.username" href="/my-page"></a>

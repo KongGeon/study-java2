@@ -20,7 +20,28 @@
         <button class="btn" th:onclick="deleteItem([[${i.id}]])">삭제</button>
     </div>
 </div>
+<!-- 페이지네이션 영역 -->
+<div class="page">
+    <!-- 이전 버튼: startPage가 1보다 커야 '이전' 그룹이 있음 -->
+    <a th:if="${startPage > 1}"
+       th:href="@{|/list/page/${startPage-1}|}">
+        이전
+    </a>
 
+    <!-- 현재 그룹의 페이지 번호들 순회 -->
+    <span th:each="p : ${#numbers.sequence(startPage, endPage)}">
+        <a th:href="@{/list/page/{p}(p=${p})}"
+           th:text="${p}"
+           th:classappend="${p == currentPage} ? 'active' : ''">
+        </a>
+    </span>
+
+    <!-- 다음 버튼: endPage가 totalPages보다 작아야 '다음' 그룹이 있음 -->
+    <a th:if="${endPage < totalPages}"
+       th:href="@{|/list/page/${endPage+1}|}">
+        다음
+    </a>
+</div>
 <script>
 
     function deleteItem(id) {
