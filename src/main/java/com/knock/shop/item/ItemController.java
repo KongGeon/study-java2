@@ -26,7 +26,7 @@ public class ItemController {
     String list(Model model){//페이지에 접속하면 실행
         List<Item> result = itemRepository.findAll();
         model.addAttribute("items", result);
-        return "list.html";
+        return "redirect:/list/page/1"; // list 페이지로 이동
     }
     @GetMapping("/list/page/{page}") //페이지네이션
     String getListPage(Model model, @PathVariable Integer page) {
@@ -115,5 +115,39 @@ public class ItemController {
 
     //    회원가입
 
+    //    검색
+    @PostMapping("/search/{page}")
+    String postSearch(@RequestParam String searchText, Model model, @PathVariable Integer page) {
+//        Item테이블에서 searchText가 들어있는거 찾아서 가져와주세요
+//        itemRepository.findAllBy컬럼명Contains("바보");
+//        var result = itemRepository.findAllByTitleContains(searchText); // 검색 기능
+
+//        var result2 = itemRepository.rawQuery1(searchText); // 검색 기능 다만 full text index 기능
+//        System.out.println(result2);
+
+        Page<Item> result = itemRepository.rawQuery1(searchText, PageRequest.of(page - 1, 3)); //PageRequest.of(0, 5) 0번째 페이지, 페이자당 5개
+        int totalPages = result.getTotalPages();
+        int currentPage = result.getNumber() + 1; // 현재 페이지 (1-based)
+        int groupSize = 2;                       // 한 번에 보여줄 페이지 개수
+
+        // (currentPage - 1) / groupSize → 0-based 그룹 인덱스
+        int groupIndex = (currentPage - 1) / groupSize;
+
+        // 그룹의 시작/끝 페이지 계산
+        int startPage = groupIndex * groupSize + 1;
+        int endPage = startPage + groupSize - 1;
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+
+        // 뷰에서 사용할 데이터 세팅
+        model.addAttribute("items", result.getContent()); // 실제 아이템 목록
+        model.addAttribute("currentPage", currentPage);    // 현재 페이지
+        model.addAttribute("totalPages", totalPages);      // 전체 페이지 수
+        model.addAttribute("startPage", startPage);        // 현재 보이는 페이지 시작
+        model.addAttribute("endPage", endPage);            // 현재 보이는 페이지 끝
+
+        return "list.html";
+    }
 
 }

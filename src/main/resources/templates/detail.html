@@ -17,6 +17,12 @@
     <h4 th:text="${items.title}">금도금 바지</h4>
     <p  th:text="${items.price}">7억</p>
 </div>
+<form action="/order" method="post">
+    <input name="title" th:value="${items.title}">
+    <input name="price" th:value="${items.price}">
+    <input name="count" placeholder="count">
+    <button>주문하기</button>
+</form>
 
 <form action="/comment" method="POST">
     <input name="content">

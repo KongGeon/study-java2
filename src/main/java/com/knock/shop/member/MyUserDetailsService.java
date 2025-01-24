@@ -40,6 +40,7 @@ public class MyUserDetailsService implements UserDetailsService {
        //return new User(user.getUsername(), user.getPassword(), authorities); // User에는 3개의 파라미터 밖에 넣을 수 없음 그래서 커스텀유저 하나 만들어서 추가하겠음
         var a = new CustomUser(user.getUsername(), user.getPassword(), authorities);
         a.displayName = user.getDisplayName();
+        a.id = user.getId();
         return a;
     }
 

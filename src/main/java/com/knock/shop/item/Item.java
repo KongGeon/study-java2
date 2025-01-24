@@ -1,9 +1,6 @@
 package com.knock.shop.item;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +13,10 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @ToString //내부 확인하는 방법 toString();
+//@Table(indexes = { //검색 빠르게 하는 방법, 대신에 글 쓰거나 할때 시간이 조금 더 오래걸릴 수 있음.
+//        @Index(name = "title", columnList = "작명"),
+//        @Index(name = "인덱스이름작명", columnList = "인덱스만들컬럼명2")
+//})
 public class Item {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
